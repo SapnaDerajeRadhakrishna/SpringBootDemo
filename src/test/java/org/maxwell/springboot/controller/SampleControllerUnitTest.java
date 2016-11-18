@@ -2,15 +2,15 @@ package org.maxwell.springboot.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.maxwell.springboot.redis.RedisConfig;
-import org.maxwell.springboot.server.MySpringBoot;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -21,9 +21,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.maxwell.springboot.server.MySpringBoot;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MySpringBoot.class)
@@ -38,9 +37,6 @@ public class SampleControllerUnitTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-
-	@MockBean
-	RedisConfig redisConfig;
 
 	@Autowired
 	ObjectMapper objectMapper;

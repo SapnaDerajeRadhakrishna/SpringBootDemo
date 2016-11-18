@@ -48,5 +48,6 @@ appender("async-appender", AsyncAppender) {
 */
 
 logger("org.springframework", INFO, ["file-appender"], false)
+logger("org.maxwell.springboot",DEBUG, ["app-appender"], false)
 
 root(DEBUG, ["app-appender"])

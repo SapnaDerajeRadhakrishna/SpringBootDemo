@@ -28,19 +28,21 @@ public class SampleController {
 	@Autowired
 	RedisTemplate<String, String> redisTemplate;
 
+	@Autowired
+	ObjectMapper mapper;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(SampleController.class);
 
 	@PostMapping("/updateDetails")
 	public void updateStudentDetails(@RequestBody Object object) {
 		LOGGER.info("0; recieved request for updating the student details");
-		ObjectMapper mapper = new ObjectMapper();
 		StudentDetails details1 = mapper.convertValue(object, StudentDetails.class);
 		TeacherDetails details2 = mapper.convertValue(object, TeacherDetails.class);
 		LOGGER.info("0; Student Details: ID: {} Name:{}", details1.getStudentID(), details1.getStudentName());
 		LOGGER.info("0; Teacher Details: ID: {} Name:{}", details2.getTeacherID(), details2.getTeacherName());
 		ValueOperations<String, String> values = redisTemplate.opsForValue();
 		values.set(String.valueOf(details1.getStudentID()), details1.getStudentName());
-
+		LOGGER.info("wtwzetew {}", values.get(String.valueOf(details1.getStudentID())));
 	}
 
 	@GetMapping("/getDetails")
@@ -52,21 +54,21 @@ public class SampleController {
 
 	@ExceptionHandler(Exception.class)
 	public RestError handleException(Exception ex, HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	        throws IOException {
 		return convertToRestError(new RestError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()), ex, request,
-				response);
+		        response);
 	}
 
 	@ExceptionHandler(RestException.class)
 	public RestError handleException(RestException ex, HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	        throws IOException {
 		return convertToRestError(ex.getRestError(), ex, request, response);
 	}
 
 	private RestError convertToRestError(RestError error, Exception ex, HttpServletRequest request,
-			HttpServletResponse response) {
+	        HttpServletResponse response) {
 		LOGGER.info("0;processing of " + request.getMethod() + " for resource " + request.getRequestURI()
-				+ " failed with error", ex);
+		        + " failed with error", ex);
 		response.setStatus(error.getHttpStatus());
 		return error;
 	}
